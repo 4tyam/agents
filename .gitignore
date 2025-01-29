@@ -1,0 +1,14 @@
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+.DS_Store
+Thumbs.db
+
+dist/
+build/
+out/
+
+tmp/
+temp/ 
