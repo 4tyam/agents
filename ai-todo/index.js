@@ -36,11 +36,30 @@ async function searchTodo(search) {
   return todos;
 }
 
+async function editTodoById(id, newTodo) {
+  if (typeof id === "object") {
+    // If received as JSON object
+    newTodo = id.newTodo;
+    id = id.id;
+  }
+
+  id = Number(id);
+
+  await db
+    .update(todosTable)
+    .set({
+      todo: newTodo,
+      updated_at: new Date(),
+    })
+    .where(eq(todosTable.id, id));
+}
+
 const tools = {
   getAllTodos: getAllTodos,
   createTodo: createTodo,
   deleteTodoById: deleteTodoById,
   searchTodo: searchTodo,
+  editTodoById: editTodoById,
 };
 
 const SYSTEM_PROMPT = `
@@ -64,6 +83,7 @@ Available Tools:
 - createTodo(todo: string): Creates a new Todo in the DB and takes a todo as a string and returns the ID of the created todo
 - deleteTodoById(id: string): Deletes a Todo by Id given in the DB
 - searchTodo(query: string): Searches for all todos matching the query string using ilike in DB
+- editTodoById(id: string, newTodo: string): Updates a todo by its ID with new content
 
 Example:
 START
