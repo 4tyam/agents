@@ -23,7 +23,7 @@ function YoutubeVideoDetails({ videoId }: { videoId: string }) {
   console.log(video);
 
   return (
-    <div className="@container bg-white rounded-xl">
+    <div className="@container bg-white rounded-xl mb-4">
       <div className="flex flex-col gap-8 mt-4">
         <Image
           src={video.thumbnail}
