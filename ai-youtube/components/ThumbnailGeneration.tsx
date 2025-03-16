@@ -4,11 +4,16 @@ import { useUser } from "@clerk/nextjs";
 import Usage from "./Usage";
 import { FeatureFlag } from "@/features/flags";
 import Image from "next/image";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 function ThumbnailGeneration({ videoId }: { videoId: string }) {
   const { user } = useUser();
 
-  const images = []; // Pull from db
+  const images = useQuery(api.images.getImages, {
+    videoId,
+    userId: user?.id ?? "",
+  });
 
   return (
     <div className="rounded-xl flex flex-col p-4 border">
@@ -20,11 +25,11 @@ function ThumbnailGeneration({ videoId }: { videoId: string }) {
       </div>
 
       <div className={`flex overflow-x-auto gap-4 ${images?.length && "mt-4"}`}>
-        {images.map(
+        {images?.map(
           (image) =>
             image.url && (
               <div
-                key={images._id}
+                key={image._id}
                 className="flex-none w-[200px] h-[110px] rounded-lg overflow-x-auto"
               >
                 <Image
